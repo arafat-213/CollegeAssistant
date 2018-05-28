@@ -24,7 +24,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText StudentIdInput, PasswordInput;
     private Intent i;
     private String username, password;
-
+    private boolean isAdmin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +50,9 @@ public class LoginActivity extends AppCompatActivity {
     public void loginBtnClick(View view) {
         username = StudentIdInput.getText().toString().trim();
         password = PasswordInput.getText().toString().trim();
-        checkAdmin();
-        authenticate();
+        isAdmin = checkAdmin();
+        if (!isAdmin)
+            authenticate();
     }
 
     public void authenticate() {
@@ -73,12 +74,13 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public void checkAdmin() {
+    public boolean checkAdmin() {
         if (username.equalsIgnoreCase("admin") && password.equals("admin")) {
             Intent intent = new Intent(LoginActivity.this, AdminActivity.class);
             startActivity(intent);
-            return;
+            return true;
         }
+        return false;
     }
 
     public void checkPreferences() {
@@ -133,7 +135,7 @@ public class LoginActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Closing Activity")
-                .setMessage("Are you sure you want to close this activity?")
+                .setMessage("Are you sure you want to exit?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {

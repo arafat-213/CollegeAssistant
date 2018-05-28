@@ -36,13 +36,17 @@ public class AdminActivity extends AppCompatActivity {
     }
 
     public void logOut(View view) {
+        clearPreferences();
+        Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
+        startActivity(intent);
+    }
+
+    public void clearPreferences() {
         SharedPreferences preferences = getApplicationContext().getSharedPreferences("MyPref", MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString("username", "empty");
         editor.putString("password", "empty");
         editor.commit();
-        Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
-        startActivity(intent);
     }
 
     @Override
@@ -50,13 +54,12 @@ public class AdminActivity extends AppCompatActivity {
         new AlertDialog.Builder(this)
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setTitle("Closing Activity")
-                .setMessage("Are you sure you want to close this activity?")
+                .setMessage("Are you sure you want to go back?")
                 .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(Intent.ACTION_MAIN);
-                        intent.addCategory(Intent.CATEGORY_HOME);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                        clearPreferences();
+                        Intent intent = new Intent(AdminActivity.this, LoginActivity.class);
                         startActivity(intent);
                     }
 
